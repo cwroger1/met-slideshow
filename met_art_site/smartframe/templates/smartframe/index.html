@@ -15,13 +15,14 @@
                 var i;
                 var random_object_id = Math.floor(Math.random() * (objectIds.length-1));
                 var src = 'https://collectionapi.metmuseum.org/public/collection/v1/objects/' + objectIds[random_object_id];
+                console.log(src);
                 var objectJSON;
                 $.ajax({
                     url: src,
                     async: false,
-                    dataType: 'text',
+                    dataType: 'json',
                     success: function(data) {
-                        objectJSON = data.primaryImageSmall;
+                        objectJSON = data.primaryImage;
                     }
                 });
                 console.log(objectJSON);
