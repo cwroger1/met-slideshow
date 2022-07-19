@@ -3,27 +3,26 @@
     {% load static %}
     <head>
         <title>MetMuseumAPI Smart Frame</title>
-        <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'smartframe/style.css' %}">
     </head>
     <body>
-        <img class="mySlides" src="{% static 'smartframe/chicken.jpg' %}"/>
-        <img class="mySlides" src="{% static 'smartframe/cow.jpeg' %}"/>
-        <img class="mySlides" src="{% static 'smartframe/sheep.png' %}"/>
-        <script>
-            var slideIndex = 0;
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
+        </script>
+        <input type="hidden" id="total" value="{{ response.total }}">
+        <script type="text/javascript">
             carousel();
-
             function carousel() {
                 var i;
-                var x = document.getElementsByClassName("mySlides");
-                for (i = 0; i < x.length; i++) {
-                    x[i].style.display = "none";
-                }
-                slideIndex++;
-                if (slideIndex > x.length) {
-                    slideIndex = 1
-                }
-                x[slideIndex-1].style.display = "block";
+                var max = document.getElementById("total").value;
+                var random_object_id = Math.floor(Math.random() * (max-1));
+                var data;
+                var src = 'https://collectionapi.metmuseum.org/public/collection/v1/objects/' + random_object_id;
+                $.getJSON(src, function(data) {
+                    var img = document.createElement('img');
+                    console.log(data.primaryImageSmall);
+                    img.src = data.primaryImageSmall;
+                    document.body.append(img);
+                });
                 setTimeout(carousel, 10000);
             }
         </script>
