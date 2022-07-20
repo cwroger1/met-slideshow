@@ -10,22 +10,14 @@
         </script>
         <script type="text/javascript">
             setInterval(carousel, 10000);
+
             function carousel() {
                 const objectIds = JSON.parse("{{ response.objectIDs | escapejs }}");
                 var randomObjectId = Math.floor(Math.random() * (objectIds.length-1));
                 var src = 'https://collectionapi.metmuseum.org/public/collection/v1/objects/' + objectIds[randomObjectId];
                 console.log(src);
-                var objectData, imageLink;
-                $.ajax({
-                    url: src,
-                    async: false,
-                    dataType: 'json',
-                    retries: 3,
-                    success: function(data) {
-                        objectData = data;
-                        imageLink = data.primaryImage;
-                    }
-                });
+                var objectData = getObjectData(src);
+                var imageLink = objectData.primaryImage;
                 if (imageLink === "") {
                     imageLink = "static/smartframe/chicken.jpg"
                 }
@@ -41,6 +33,21 @@
                     "background-image": `url(${img.src})`, 
                 });
             }
+
+            function getObjectData(src) {
+                var objData;
+                $.ajax({
+                    url: src,
+                    async: false,
+                    dataType: 'json',
+                    retries: 3,
+                    success: function(data) {
+                        objData = data;
+                    }
+                });
+                return objData;
+            }
+
         </script>
     </body>
 </html>
