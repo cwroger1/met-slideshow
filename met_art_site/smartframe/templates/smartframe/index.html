@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-    {% load static %}
     <head>
         <title>MetMuseumAPI Smart Frame</title>
+        {% load static %}
         <link rel="stylesheet" type="text/css" href="{% static 'smartframe/style.css' %}">
     </head>
     <body>
@@ -12,15 +12,15 @@
             setInterval(carousel, 10000);
             function carousel() {
                 const objectIds = JSON.parse("{{ response.objectIDs | escapejs }}");
-                var i;
-                var random_object_id = Math.floor(Math.random() * (objectIds.length-1));
-                var src = 'https://collectionapi.metmuseum.org/public/collection/v1/objects/' + objectIds[random_object_id];
+                var randomObjectId = Math.floor(Math.random() * (objectIds.length-1));
+                var src = 'https://collectionapi.metmuseum.org/public/collection/v1/objects/' + objectIds[randomObjectId];
                 console.log(src);
                 var department, title, culture, period, artist, imageLink;
                 $.ajax({
                     url: src,
                     async: false,
                     dataType: 'json',
+                    retries: 3,
                     success: function(data) {
                         imageLink = data.primaryImage;
                         department = data.department;
@@ -43,11 +43,6 @@
                 }); 
                 $("body").css({ 
                     "background-image": `url(${img.src})`, 
-                    "background-attachment": "fixed",
-                    "background-size": "contain",
-                    "background-repeat": "no-repeat",
-                    "background-position": "center",
-                    "background-color": "black",
                 });
             }
         </script>
