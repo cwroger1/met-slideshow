@@ -15,19 +15,15 @@
                 var randomObjectId = Math.floor(Math.random() * (objectIds.length-1));
                 var src = 'https://collectionapi.metmuseum.org/public/collection/v1/objects/' + objectIds[randomObjectId];
                 console.log(src);
-                var department, title, culture, period, artist, imageLink;
+                var objectData, imageLink;
                 $.ajax({
                     url: src,
                     async: false,
                     dataType: 'json',
                     retries: 3,
                     success: function(data) {
+                        objectData = data;
                         imageLink = data.primaryImage;
-                        department = data.department;
-                        title = data.title;
-                        culture = data.culture;
-                        period = data.period;
-                        artist = data.artistDisplayName;
                     }
                 });
                 if (imageLink === "") {
@@ -37,9 +33,9 @@
                 var img = document.createElement('img');
                 img.src = imageLink;
                 $(document).off().on('click', function() {
-                    alert("Title: " + title + "\n" + "Artist: " + artist + "\n" +
-                        "Department: " + department + "\n" + "Culture: " + culture + "\n" +
-                        "Period: " + period + "\n");
+                    alert("Title: " + objectData.title + "\n" + "Artist: " + objectData.artist + "\n" +
+                        "Department: " + objectData.department + "\n" + "Culture: " + objectData.culture + "\n" +
+                        "Period: " + objectData.period + "\n");
                 }); 
                 $("body").css({ 
                     "background-image": `url(${img.src})`, 
