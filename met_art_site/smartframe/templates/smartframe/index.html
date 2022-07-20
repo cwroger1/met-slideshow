@@ -9,25 +9,38 @@
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
         </script>
         <script type="text/javascript">
-            carousel();
+            setInterval(carousel, 10000);
             function carousel() {
                 const objectIds = JSON.parse("{{ response.objectIDs | escapejs }}");
                 var i;
                 var random_object_id = Math.floor(Math.random() * (objectIds.length-1));
                 var src = 'https://collectionapi.metmuseum.org/public/collection/v1/objects/' + objectIds[random_object_id];
                 console.log(src);
-                var objectJSON;
+                var department, title, culture, period, artist, imageLink;
                 $.ajax({
                     url: src,
                     async: false,
                     dataType: 'json',
                     success: function(data) {
-                        objectJSON = data.primaryImage;
+                        imageLink = data.primaryImage;
+                        department = data.department;
+                        title = data.title;
+                        culture = data.culture;
+                        period = data.period;
+                        artist = data.artistDisplayName;
                     }
                 });
-                console.log(objectJSON);
+                if (imageLink === "") {
+                    imageLink = "static/smartframe/chicken.jpg"
+                }
+                console.log(imageLink);
                 var img = document.createElement('img');
-                img.src = objectJSON;
+                img.src = imageLink;
+                $(document).off().on('click', function() {
+                    alert("Title: " + title + "\n" + "Artist: " + artist + "\n" +
+                        "Department: " + department + "\n" + "Culture: " + culture + "\n" +
+                        "Period: " + period + "\n");
+                }); 
                 $("body").css({ 
                     "background-image": `url(${img.src})`, 
                     "background-attachment": "fixed",
@@ -36,7 +49,6 @@
                     "background-position": "center",
                     "background-color": "black",
                 });
-                setTimeout(carousel, 10000);
             }
         </script>
     </body>
