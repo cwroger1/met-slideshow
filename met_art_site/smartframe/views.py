@@ -3,7 +3,7 @@ import requests
 
 # Create your views here.
 def index(request):
-    response = requests.get('https://collectionapi.metmuseum.org/public/collection/v1/objects').json()
+    response = requests.get('https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=flowers').json()
     return render(request, "smartframe/index.html", {
         'response': response,
     })
