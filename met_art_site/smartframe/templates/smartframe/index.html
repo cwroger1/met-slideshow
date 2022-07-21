@@ -12,6 +12,9 @@
         </script>
         <script type="text/javascript">
             var count = 0;
+            var objectData;
+            var src;
+
             carousel();
             setInterval(carousel, 10000);
 
@@ -22,28 +25,31 @@
                 imgTwo.style.display = "none";
                 const objectIds = JSON.parse("{{ response.objectIDs | escapejs }}");
                 var randomObjectId = Math.floor(Math.random() * (objectIds.length-1));
-                var src = 'https://collectionapi.metmuseum.org/public/collection/v1/objects/' + objectIds[randomObjectId];
+                if (count > 0) {
+                    objectData = getObjectData(src);
+                    $(".slide").off().on('click', function() {
+                        alert("Title: " + objectData.title + "\n" + "Artist: " + objectData.artist + "\n" +
+                            "Department: " + objectData.department + "\n" + "Culture: " + objectData.culture + "\n" +
+                            "Period: " + objectData.period + "\n");
+                    }); 
+                }
+                src = 'https://collectionapi.metmuseum.org/public/collection/v1/objects/' + objectIds[randomObjectId];
                 console.log(src);
-                var objectData = getObjectData(src);
-                var imageLink = objectData.primaryImage;
+                var objectData1 = getObjectData(src);
+                var imageLink = objectData1.primaryImage;
                 if (imageLink === "") {
                     imageLink = "static/smartframe/chicken.jpg"
                 }
                 console.log(imageLink);
-                //var img = document.createElement('img');
-                //img.src = imageLink;
-                // need to make alert point to object currently being displayed
-                $(document).off().on('click', function() {
-                    alert("Title: " + objectData.title + "\n" + "Artist: " + objectData.artist + "\n" +
-                        "Department: " + objectData.department + "\n" + "Culture: " + objectData.culture + "\n" +
-                        "Period: " + objectData.period + "\n");
-                }); 
+                // initial time through, set #imageOne src to first image but keep hidden
                 if (count === 0) {
                     imgOne.src = imageLink;
                     $("#imageOne").css({ 
                         "display": "none",
                     });
                     count++;
+                // set #imageTwo src to next image and keep hidden
+                // make #imageOne visible
                 } else if (count === 1) {
                     imgTwo.src = imageLink;
                     $("#imageTwo").css({ 
@@ -57,6 +63,7 @@
                         "max-height": "100%",
                     });
                     count++;
+                // set #imageOne src to next image and hide, and make #imageTwo visible
                 } else if (count === 2) {
                     imgOne.src = imageLink;
                     $("#imageOne").css({ 
@@ -71,11 +78,6 @@
                     });
                     count = 1;
                 }
-                /*
-                $("body").css({ 
-                    "background-image": `url(${img.src})`, 
-                });
-                */
             }
 
             function getObjectData(src) {
