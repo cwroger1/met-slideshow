@@ -1,8 +1,7 @@
 
-body {
-    background-attachment: fixed;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
     background-color: black;
 }

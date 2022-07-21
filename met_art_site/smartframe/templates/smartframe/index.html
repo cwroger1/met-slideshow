@@ -6,13 +6,20 @@
         <link rel="stylesheet" type="text/css" href="{% static 'smartframe/style.css' %}">
     </head>
     <body>
+        <img class="slide" id="imageOne" src="">
+        <img class="slide" id="imageTwo" src="">
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
         </script>
         <script type="text/javascript">
+            var count = 0;
             carousel();
             setInterval(carousel, 10000);
 
             function carousel() {
+                var imgOne = document.getElementById("imageOne");
+                var imgTwo = document.getElementById("imageTwo");
+                imgOne.style.display = "none";
+                imgTwo.style.display = "none";
                 const objectIds = JSON.parse("{{ response.objectIDs | escapejs }}");
                 var randomObjectId = Math.floor(Math.random() * (objectIds.length-1));
                 var src = 'https://collectionapi.metmuseum.org/public/collection/v1/objects/' + objectIds[randomObjectId];
@@ -23,16 +30,52 @@
                     imageLink = "static/smartframe/chicken.jpg"
                 }
                 console.log(imageLink);
-                var img = document.createElement('img');
-                img.src = imageLink;
+                //var img = document.createElement('img');
+                //img.src = imageLink;
+                // need to make alert point to object currently being displayed
                 $(document).off().on('click', function() {
                     alert("Title: " + objectData.title + "\n" + "Artist: " + objectData.artist + "\n" +
                         "Department: " + objectData.department + "\n" + "Culture: " + objectData.culture + "\n" +
                         "Period: " + objectData.period + "\n");
                 }); 
+                if (count === 0) {
+                    imgOne.src = imageLink;
+                    $("#imageOne").css({ 
+                        "display": "none",
+                    });
+                    count++;
+                } else if (count === 1) {
+                    imgTwo.src = imageLink;
+                    $("#imageTwo").css({ 
+                        "display": "none",
+                    });
+                    $("#imageOne").css({ 
+                        "padding": "0",
+                        "display": "block",
+                        "margin": "0 auto",
+                        "max-width": "100%",
+                        "max-height": "100%",
+                    });
+                    count++;
+                } else if (count === 2) {
+                    imgOne.src = imageLink;
+                    $("#imageOne").css({ 
+                        "display": "none",
+                    });
+                    $("#imageTwo").css({ 
+                        "padding": "0",
+                        "display": "block",
+                        "margin": "0 auto",
+                        "max-width": "100%",
+                        "max-height": "100%",
+                    });
+                    count = 1;
+                }
+                /*
                 $("body").css({ 
                     "background-image": `url(${img.src})`, 
                 });
+                */
             }
 
             function getObjectData(src) {
