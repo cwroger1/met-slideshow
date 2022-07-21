@@ -19,12 +19,19 @@
             setInterval(carousel, 10000);
 
             function carousel() {
+                // set variables for image elements
                 var imgOne = document.getElementById("imageOne");
                 var imgTwo = document.getElementById("imageTwo");
-                imgOne.style.display = "none";
-                imgTwo.style.display = "none";
+                // hide image placeholders first time through
+                if (count === 0) {
+                    imgOne.style.display = "none";
+                    imgTwo.style.display = "none";
+                }
+                // make a javascript object from JSON
                 const objectIds = JSON.parse("{{ response.objectIDs | escapejs }}");
+                // make a random object id number
                 var randomObjectId = Math.floor(Math.random() * (objectIds.length-1));
+                // set alert with information of current image/object
                 if (count > 0) {
                     objectData = getObjectData(src);
                     $(".slide").off().on('click', function() {
@@ -33,10 +40,13 @@
                             "Period: " + objectData.period + "\n");
                     }); 
                 }
+                // create a source url for the random object
                 src = 'https://collectionapi.metmuseum.org/public/collection/v1/objects/' + objectIds[randomObjectId];
                 console.log(src);
-                var objectData1 = getObjectData(src);
-                var imageLink = objectData1.primaryImage;
+                // get object data for the next image and a link for the image
+                var objectDataNext = getObjectData(src);
+                var imageLink = objectDataNext.primaryImage;
+                // if the image field is empty, set to default image
                 if (imageLink === "") {
                     imageLink = "static/smartframe/chicken.jpg"
                 }
@@ -52,29 +62,21 @@
                 // make #imageOne visible
                 } else if (count === 1) {
                     imgTwo.src = imageLink;
+                    $("#imageOne").css({ 
+                        "display": "block",
+                    });
                     $("#imageTwo").css({ 
                         "display": "none",
-                    });
-                    $("#imageOne").css({ 
-                        "padding": "0",
-                        "display": "block",
-                        "margin": "0 auto",
-                        "max-width": "100%",
-                        "max-height": "100%",
                     });
                     count++;
                 // set #imageOne src to next image and hide, and make #imageTwo visible
                 } else if (count === 2) {
                     imgOne.src = imageLink;
+                    $("#imageTwo").css({ 
+                        "display": "block",
+                    });
                     $("#imageOne").css({ 
                         "display": "none",
-                    });
-                    $("#imageTwo").css({ 
-                        "padding": "0",
-                        "display": "block",
-                        "margin": "0 auto",
-                        "max-width": "100%",
-                        "max-height": "100%",
                     });
                     count = 1;
                 }
