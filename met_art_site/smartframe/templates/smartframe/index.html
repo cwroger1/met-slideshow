@@ -8,6 +8,9 @@
     <body>
         <img class="slide" id="imageOne" src="">
         <img class="slide" id="imageTwo" src="">
+        <div id="intro">
+            Metropolitan Museum of Art:<br>Floral Themed Slideshow
+        </div>
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
         </script>
         <script type="text/javascript">
@@ -19,9 +22,10 @@
             setInterval(carousel, 10000);
 
             function carousel() {
-                // set variables for image elements
+                // set variables for image elements and intro text
                 var imgOne = document.getElementById("imageOne");
                 var imgTwo = document.getElementById("imageTwo");
+                var intro = document.getElementById("intro");
                 // hide image placeholders first time through
                 if (count === 0) {
                     imgOne.style.display = "none";
@@ -33,6 +37,7 @@
                 var randomObjectId = Math.floor(Math.random() * (objectIds.length-1));
                 // set alert with information of current image/object
                 if (count > 0) {
+                    intro.style.display = "none";
                     objectData = getObjectData(src);
                     $(".slide").off().on('click', function() {
                         alert("Title: " + objectData.title + "\n" + "Artist: " + objectData.artist + "\n" +
