@@ -31,20 +31,15 @@
                     imgOne.style.display = "none";
                     imgTwo.style.display = "none";
                 }
+                // sets an alert to display information about the image/object
+                if (count > 0) {
+                    setAlertInfo();
+                }
                 // make a javascript object from JSON
                 const objectIds = JSON.parse("{{ response.objectIDs | escapejs }}");
                 // make a random object id number
                 var randomObjectId = Math.floor(Math.random() * (objectIds.length-1));
                 // set alert with information of current image/object
-                if (count > 0) {
-                    intro.style.display = "none";
-                    objectData = getObjectData(src);
-                    $(".slide").off().on('click', function() {
-                        alert("Title: " + objectData.title + "\n" + "Artist: " + objectData.artist + "\n" +
-                            "Department: " + objectData.department + "\n" + "Culture: " + objectData.culture + "\n" +
-                            "Period: " + objectData.period + "\n");
-                    }); 
-                }
                 // create a source url for the random object
                 src = 'https://collectionapi.metmuseum.org/public/collection/v1/objects/' + objectIds[randomObjectId];
                 console.log(src);
@@ -102,6 +97,16 @@
                     }
                 });
                 return objData;
+            }
+
+            function setAlertInfo() {
+                intro.style.display = "none";
+                objectData = getObjectData(src);
+                $(".slide").off().on('click', function() {
+                    alert("Title: " + objectData.title + "\n" + "Artist: " + objectData.artist + "\n" +
+                    "Department: " + objectData.department + "\n" + "Culture: " + objectData.culture + "\n" +
+                    "Period: " + objectData.period + "\n");
+                }); 
             }
 
         </script>
