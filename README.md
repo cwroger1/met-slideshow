@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ### Objective
 
 Your challenge is to use the Metropolitan Museum's API (https://metmuseum.github.io/) to create a website.
@@ -45,3 +46,8 @@ Please organize, design, test, and document your code as if it were going into p
 All the best and happy coding,
 
 The Indica Lab Team
+=======
+# met-slideshow
+
+>Simple JavaScript app which connects to the Metropolitan Museum of Art's API and displays images from their collection in a slideshow.
+>>>>>>> main
