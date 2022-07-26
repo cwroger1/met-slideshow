@@ -54,30 +54,19 @@
                 // initial time through, set #imageOne src to first image but keep hidden
                 if (count === 0) {
                     imgOne.src = imageLink;
-                    $("#imageOne").css({ 
-                        "display": "none",
-                    });
                     count++;
                 // set #imageTwo src to next image and keep hidden
                 // make #imageOne visible
                 } else if (count === 1) {
                     imgTwo.src = imageLink;
-                    $("#imageOne").css({ 
-                        "display": "block",
-                    });
-                    $("#imageTwo").css({ 
-                        "display": "none",
-                    });
+                    imgOne.style.display = "block";
+                    imgTwo.style.display = "none";
                     count++;
                 // set #imageOne src to next image and hide, and make #imageTwo visible
                 } else if (count === 2) {
                     imgOne.src = imageLink;
-                    $("#imageTwo").css({ 
-                        "display": "block",
-                    });
-                    $("#imageOne").css({ 
-                        "display": "none",
-                    });
+                    imgOne.style.display = "none";
+                    imgTwo.style.display = "block";
                     count = 1;
                 }
             }
